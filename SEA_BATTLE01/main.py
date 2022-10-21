@@ -59,7 +59,7 @@ class PLAYER:
         if not self.enemy_fleet:
             self.enemy_board.screen()
             print("Поздравляем, игра окончена! Победил ", self.nickname)
-            raise AssertionError("end of game")
+            raise OutOfRange("end of game")
         self.enemy_board.screen()
         #print('array =', len(self.enemy_board.array), "vessels =", len(self.enemy_board.vessels_list))
 
@@ -152,8 +152,8 @@ class BOARD:
                 pass
 
     def FillingSea(self, l):  # принимает  правильно отгенерированнй корабль в рамках поля,
-        # проверяет на предмет перехлестов и границ с соседями
-        # и вставляет его в поле
+                              # проверяет на предмет перехлестов и границ с соседями
+                              # и вставляет его в поле
         overflowing = OverflowVessel()
         playboard = self
         for _ in range(0, 2000):
@@ -176,17 +176,18 @@ class BOARD:
                     playboard.vessels_list.append(ship_)
 
                     break
-
-
-
-
     def ffff(self):
         self.field = [['0' for _ in range(0, 6)] for _ in range(0, 6)]
         for __ in self.array:
             self.field[__.x][__.y] = 'V'
+            # 'V' - судно
+            # 'I' - раненный отсек
+            # 'X' - убит
+            # '0' - пусто
+
 
     def screen(self):  # вывод в экран игровой матрицы
-
+        board_name = '  Это карта игрока "'+self.nickname +'"'
         print("        1                 2                 3                 4                 5                 6 \n",
               "       ↓                 ↓                 ↓                 ↓                 ↓                 ↓   ")
         for row in range(0, 6):  # строки игры
@@ -195,8 +196,12 @@ class BOARD:
                 curr_scanline = ''
                 for y in range(0, 6):  # столбы игры
                     curr_scanline += cell_type(self.hide_ships)[self.field[row][y]][scan * 18:(scan + 1) * 18]
-                if scan == 3:
+                if scan == 3 and row == 5:
+                    print(curr_scanline + ' ← ' + str(row + 1) + board_name)
+
+                elif scan == 3:
                     print(curr_scanline + ' ← ' + str(row + 1))
+
                 else:
                     print(curr_scanline)
         print("        ↑                 ↑                 ↑                 ↑                 ↑                 ↑\n",
@@ -247,7 +252,7 @@ class OverflowVessel(Exception):
 
 
 class OutLiner:  # класс для создания обводки от obj_for_outline,
-    # от него берется .dotsarray список со всеми точками
+                 # от него берется .dotsarray список со всеми точками
 
     def __init__(self, obj_for_outline):
         abrise = []
@@ -386,7 +391,7 @@ class TheGame:
 
             for s in _:
                 print(s, '', end='\b')
-                time.sleep(.00000)
+                time.sleep(.0000)
         print( '            Игровое поле размером 6х6,\n'
               '  для места нанесения удара указывайте координаты\n'\
               '              ДВУМЯ цифрами от 1 до 6',
@@ -404,7 +409,7 @@ class TheGame:
                 self.boards_list[self.TRIGGER].screen()
                 self.TRIGGER = 1 - self.TRIGGER
 
-        except AssertionError:
+        except OutOfRange:
             print("--------------------конец игры------------------------ ( нажмите 'ENTER' для выхода )")
             input()
 
@@ -427,9 +432,9 @@ board_H.hide_ships = False
 board_AI.hide_ships = True
 
 John = human(board_H, board_AI)
-John.nickname = 'Человек'
+John.nickname = board_H.nickname = 'Человек'
 HAL9000 = AI(board_AI, board_H)
-HAL9000.nickname = 'Центральный процессор'
+HAL9000.nickname = board_AI.nickname = 'Центральный процессор'
 IGRA = TheGame(board_H, board_AI, John, HAL9000)
 IGRA.RUN()
 
