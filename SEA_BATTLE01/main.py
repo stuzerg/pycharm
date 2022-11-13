@@ -361,6 +361,7 @@ def cell_type(hide):
 class TheGame:
     def __init__(self, board1, board2, player1, player2):
 
+
         self.players_list = [player1, player2]
         self.boards_list = [board1, board2]
         self.TRIGGER = 0
@@ -391,7 +392,7 @@ class TheGame:
 
             for s in _:
                 print(s, '', end='\b')
-                time.sleep(.0000)
+                time.sleep(.0001)
         print( '            Игровое поле размером 6х6,\n'
               '  для места нанесения удара указывайте координаты\n'\
               '              ДВУМЯ цифрами от 1 до 6',
