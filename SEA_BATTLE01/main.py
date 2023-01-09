@@ -421,7 +421,7 @@ class TheGame:
 
 board_H = BOARD()
 board_AI = BOARD()
-
+print(dir(board_AI))
 
 board_H.Generate()
 board_AI.Generate()
