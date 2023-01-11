@@ -1,3 +1,4 @@
-l = ['qw','1','a']
+import os
+from pathlib import Path
 
-print(''.join(l))
+print(Path(__file__).resolve().parent.parent)

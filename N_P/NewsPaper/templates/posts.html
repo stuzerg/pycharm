@@ -1,0 +1,40 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}
+posts
+{% endblock title %}
+
+
+{% block content %}
+<h1>Все новости {{posts|length}}</h1>
+
+<table>
+           <tr>
+               <td>Заголовок</td>
+               <td>Опубликовано</td>
+               <td>Содержание</td>
+
+
+           </tr>
+
+           {% for pst in posts %}
+           <tr>
+               <td>{{ pst.header }}</td>
+               <td>{{ pst.creation_date|date:'d M Y' }}</td>
+               <td>{{ pst.body|truncatechars:20 }}</td>
+
+
+           </tr>
+           {% endfor %}
+
+       </table>
+
+
+
+
+
+
+<!--{{ posts }}-->
+{% endblock content %}

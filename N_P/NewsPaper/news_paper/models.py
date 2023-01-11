@@ -8,6 +8,8 @@ import datetime
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.FloatField(default=0)
+    def __str__(self):
+     return f'{self.user.username}'
 
 
 
@@ -66,6 +68,10 @@ class Post(models.Model):
         self.save()
 
 
+    def __str__(self):
+        return f'{self.body}:{self.author}'
+
+
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -77,6 +83,8 @@ class Comment(models.Model):
     body = models.TextField(default='здесь ничего нет')
     create_time = models.DateTimeField(auto_now_add=True)
     rating = models.FloatField(default=0)
+
+
 
     def like(self):
         self.rating += 1
